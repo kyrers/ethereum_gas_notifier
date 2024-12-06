@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gas Prices</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="container">
+      <h1>Ethereum Gas Prices</h1>
+      <div id="prices">
+        <p><strong>Low:</strong> <span id="low">Loading...</span> Gwei</p>
+        <p>
+          <strong>Average:</strong> <span id="average">Loading...</span> Gwei
+        </p>
+        <p><strong>High:</strong> <span id="high">Loading...</span> Gwei</p>
+      </div>
+      <button id="refresh">Refresh</button>
+    </div>
+    <script type="module" src="../dist/fetchGasPrice.js"></script>
+  </body>
+</html>
