@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const low = document.getElementById("low");
   const average = document.getElementById("average");
   const high = document.getElementById("high");
-  const refreshButton = document.getElementById("refresh");
 
   const fetchGasPrices = () => {
     chrome.runtime.sendMessage({ type: "FETCH_GAS_PRICES" }, (response) => {
@@ -18,5 +17,4 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   fetchGasPrices();
-  refreshButton.addEventListener("click", fetchGasPrices);
 });
