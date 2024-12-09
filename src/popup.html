@@ -8,12 +8,16 @@
   </head>
   <body>
     <div id="container">
-      <h1>Ethereum Gas</h1>
-      <div id="prices">
-        <p><strong>Low:</strong> <span id="low">Loading...</span></p>
-        <p><strong>Average:</strong> <span id="average">Loading...</span></p>
-        <p><strong>High:</strong> <span id="high">Loading...</span></p>
-      </div>
+      <p><strong>Low:</strong> <span id="low">Loading...</span></p>
+      <p><strong>Average:</strong> <span id="average">Loading...</span></p>
+      <p><strong>High:</strong> <span id="high">Loading...</span></p>
+      <input
+        type="number"
+        id="thresholdInput"
+        placeholder="When below this price"
+      />
+      <button id="save">Notify me</button>
+      <p id="message" class="hidden"></p>
     </div>
     <script type="module" src="popup.js"></script>
   </body>
