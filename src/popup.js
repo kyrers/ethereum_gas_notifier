@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Save threshold to chrome.storage.sync
+  // Save threshold and reset notify flag
   const saveThreshold = () => {
     const thresholdValue = parseFloat(thresholdInput.value);
     if (isNaN(thresholdValue) || thresholdValue <= 0) {
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    chrome.storage.sync.set({ gasThreshold: thresholdValue }, () => {
+    chrome.storage.sync.set({ gasThreshold: thresholdValue, notify: true }, () => {
       message.innerText = `Threshold saved: ${thresholdValue} Gwei`;
       message.classList.remove("hidden");
       setTimeout(() => message.classList.add("hidden"), 3000); // Hide message after 3 seconds

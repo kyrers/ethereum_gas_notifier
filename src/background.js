@@ -33,10 +33,14 @@ const fetchGasPrices = (callback) => {
 
 // Check gas price against threshold
 const checkThreshold = (currentAverage) => {
-  chrome.storage.sync.get("gasThreshold", (data) => {
-    const threshold = data.gasThreshold;
-    if (threshold && currentAverage <= threshold) {
+  chrome.storage.sync.get(["gasThreshold", "notify"], (data) => {
+    const { gasThreshold: threshold, notify } = data;
+
+    if (threshold && notify && currentAverage <= threshold) {
       notifyUser(currentAverage, threshold);
+
+      // Update the flag to prevent repeated notifications
+      chrome.storage.sync.set({ notify: false });
     }
   });
 };
@@ -53,11 +57,11 @@ const notifyUser = (currentAverage, threshold) => {
 
 // Set up alarms
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.alarms.create("checkGasPrices", { periodInMinutes: 0.5  });
+  chrome.alarms.create("checkGasPrices", { periodInMinutes: 0.5 });
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  chrome.alarms.create("checkGasPrices", { periodInMinutes: 0.5});
+  chrome.alarms.create("checkGasPrices", { periodInMinutes: 0.5 });
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
