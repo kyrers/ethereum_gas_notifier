@@ -3,16 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const average = document.getElementById("average");
   const high = document.getElementById("high");
   const thresholdInput = document.getElementById("thresholdInput");
-  const saveButton = document.getElementById("save");
+  const notifyButton = document.getElementById("notifyButton");
   const message = document.getElementById("message");
 
-  // Fetch gas prices and update the UI
+  const updateGasPriceUI = (gasPrices) => {
+    low.innerText = gasPrices.low;
+    average.innerText = gasPrices.average;
+    high.innerText = gasPrices.high;
+  };
+
   const fetchGasPrices = () => {
     chrome.runtime.sendMessage({ type: "FETCH_GAS_PRICES" }, (response) => {
       if (response && response.success) {
-        low.innerText = response.gasPrices.low;
-        average.innerText = response.gasPrices.average;
-        high.innerText = response.gasPrices.high;
+        updateGasPriceUI(response.gasPrices);
       } else {
         console.error("Error fetching gas prices:", response.error);
         alert("Failed to fetch gas prices. Please try again later.");
@@ -28,22 +31,32 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    chrome.storage.sync.set({ gasThreshold: thresholdValue, notify: true }, () => {
-      message.innerText = `Threshold saved: ${thresholdValue} Gwei`;
-      message.classList.remove("hidden");
-      setTimeout(() => message.classList.add("hidden"), 3000); // Hide message after 3 seconds
-    });
+    chrome.storage.sync.set(
+      { gasThreshold: thresholdValue, notify: true },
+      () => {
+        message.innerText = `Threshold set!`;
+        message.classList.remove("hidden");
+        setTimeout(() => message.classList.add("hidden"), 3000);
+      }
+    );
   };
 
-  // Load the saved threshold when the popup opens
-  chrome.storage.sync.get("gasThreshold", (data) => {
-    if (data.gasThreshold) {
+  // Load the saved threshold when the popup, but only display it if no notification about it has been sent already
+  chrome.storage.sync.get(["gasThreshold", "notify"], (data) => {
+    if (data.gasThreshold && data.notify) {
       thresholdInput.value = data.gasThreshold;
     }
   });
 
+  // Listen for gas price updates from background
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === "GAS_PRICES_UPDATED") {
+      updateGasPriceUI(message.gasPrices);
+    }
+  });
+
   // Event listeners
-  saveButton.addEventListener("click", saveThreshold);
+  notifyButton.addEventListener("click", saveThreshold);
 
   // Fetch gas prices on popup load
   fetchGasPrices();
