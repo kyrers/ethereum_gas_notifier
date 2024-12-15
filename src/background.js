@@ -7,7 +7,7 @@ const notifyUser = (currentAverage, threshold) => {
     type: "basic",
     iconUrl: "../icons/icon128.png",
     title: "Ethereum Gas Alert",
-    message: `Average gas price is ${currentAverage} Gwei, below your threshold of ${threshold}!`,
+    message: `Average gas price is ${parseFloat(currentAverage).toFixed(2)} Gwei, below your threshold of ${threshold}!`,
   });
 };
 

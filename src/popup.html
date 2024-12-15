@@ -8,15 +8,22 @@
   </head>
   <body>
     <div id="container">
-      <p><strong>Low:</strong> <span id="low">Loading...</span></p>
-      <p><strong>Average:</strong> <span id="average">Loading...</span></p>
-      <p><strong>High:</strong> <span id="high">Loading...</span></p>
-      <input
-        type="number"
-        id="thresholdInput"
-        placeholder="When below this price"
-      />
-      <button id="notifyButton">Notify me</button>
+      <h2>Ethereum Mainnet Gas Prices</h2>
+      <div id="prices">
+        <p><strong>Low:</strong> <span id="low">Loading...</span> Gwei</p>
+        <p>
+          <strong>Average:</strong> <span id="average">Loading...</span> Gwei
+        </p>
+        <p><strong>High:</strong> <span id="high">Loading...</span> Gwei</p>
+      </div>
+      <div id="threshold">
+        <input
+          type="number"
+          id="thresholdInput"
+          placeholder="Notify when below (Gwei)"
+        />
+        <button id="notifyButton">Notify me</button>
+      </div>
       <p id="message" class="hidden"></p>
     </div>
     <script type="module" src="popup.js"></script>

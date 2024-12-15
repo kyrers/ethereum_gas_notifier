@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const message = document.getElementById("message");
 
   const updateGasPriceUI = (gasPrices) => {
-    low.innerText = gasPrices.low;
-    average.innerText = gasPrices.average;
-    high.innerText = gasPrices.high;
+    low.innerText = parseFloat(gasPrices.low).toFixed(2);
+    average.innerText = parseFloat(gasPrices.average).toFixed(2);
+    high.innerText = parseFloat(gasPrices.high).toFixed(2);
   };
 
   const fetchGasPrices = () => {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chrome.storage.sync.set(
       { gasThreshold: thresholdValue, notify: true },
       () => {
-        message.innerText = `Threshold set!`;
+        message.innerText = `You'll be warned!`;
         message.classList.remove("hidden");
         setTimeout(() => message.classList.add("hidden"), 3000);
       }
