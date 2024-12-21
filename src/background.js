@@ -1,5 +1,4 @@
-const ETHERSCAN_API_KEY = "BSEYJEUM2AQ83ZG8FH3EMPUFF7TCYAT84F";
-const ETHERSCAN_API_URL = `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${ETHERSCAN_API_KEY}`;
+const GAS_PRICES_URL = `https://ethereum-gas-notifier-backend.vercel.app/gasPrices`;
 
 // Notify user if gas price is below the threshold
 const notifyUser = (currentAverage, threshold) => {
@@ -7,7 +6,9 @@ const notifyUser = (currentAverage, threshold) => {
     type: "basic",
     iconUrl: "../icons/icon128.png",
     title: "Ethereum Gas Alert",
-    message: `Average gas price is ${parseFloat(currentAverage).toFixed(2)} Gwei, below your threshold of ${threshold}!`,
+    message: `Average gas price is ${parseFloat(currentAverage).toFixed(
+      2
+    )} Gwei, below your threshold of ${threshold}!`,
   });
 };
 
@@ -25,14 +26,14 @@ const checkThreshold = (currentAverage) => {
 
 // Fetch gas prices
 const fetchGasPrices = (callback) => {
-  fetch(ETHERSCAN_API_URL)
+  fetch(GAS_PRICES_URL)
     .then((response) => response.json())
     .then((data) => {
-      if (data.status === "1") {
+      if (data.success) {
         const gasPrices = {
-          low: data.result.SafeGasPrice,
-          average: data.result.ProposeGasPrice,
-          high: data.result.FastGasPrice,
+          low: data.gasPrices.low,
+          average: data.gasPrices.average,
+          high: data.gasPrices.high,
         };
 
         chrome.runtime.sendMessage({ type: "GAS_PRICES_UPDATED", gasPrices });
